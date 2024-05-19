@@ -16,7 +16,7 @@ require (
 	github.com/rkoesters/xdg v0.0.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/urfave/cli/v2 v2.27.2
-	github.com/yorukot/ansichroma v0.0.0-20240519081657-d7791bcab076
+	github.com/yorukot/ansichroma v0.0.0-20240519091240-725ddac43b91
 	golift.io/xtractr v0.2.2
 )
 

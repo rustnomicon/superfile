@@ -190,6 +190,8 @@ github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913 h1:+qGGcbkzsfDQNPPe
 github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913/go.mod h1:4aEEwZQutDLsQv2Deui4iYQ6DWTxR14g6m8Wv88+Xqk=
 github.com/yorukot/ansichroma v0.0.0-20240519081657-d7791bcab076 h1:0uqFOHBV5rZxdJevTczkbyHS6LxZPKwjyJJy7Um++G8=
 github.com/yorukot/ansichroma v0.0.0-20240519081657-d7791bcab076/go.mod h1:Er9xbqeEBUScZnfUezMWl31vBYleQBxoZ0tBhOnqhwI=
+github.com/yorukot/ansichroma v0.0.0-20240519091240-725ddac43b91 h1:NHbCIWrx1Vjq5c19DQVj7T85pAgLKm9DnnEtS/x7Sfo=
+github.com/yorukot/ansichroma v0.0.0-20240519091240-725ddac43b91/go.mod h1:Er9xbqeEBUScZnfUezMWl31vBYleQBxoZ0tBhOnqhwI=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/yusufpapurcu/wmi v1.2.4 h1:zFUKzehAFReQwLys1b/iSMl+JQGSCSjtVqQn9bBrPo0=
 github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQmPyzfmi0=
