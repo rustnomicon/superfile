@@ -9,7 +9,7 @@ require (
 	github.com/barasher/go-exiftool v1.10.0
 	github.com/charmbracelet/bubbles v0.18.0
 	github.com/charmbracelet/bubbletea v0.26.2
-	github.com/charmbracelet/lipgloss v0.10.0
+	github.com/charmbracelet/lipgloss v0.11.0
 	github.com/lithammer/shortuuid v3.0.0+incompatible
 	github.com/masatana/go-textdistance v0.0.0-20191005053614-738b0edac985
 	github.com/muesli/termenv v0.15.2
@@ -19,7 +19,10 @@ require (
 	golift.io/xtractr v0.2.2
 )
 
-require github.com/alecthomas/chroma/v2 v2.14.0 // indirect
+require (
+	github.com/alecthomas/chroma/v2 v2.14.0 // indirect
+	github.com/charmbracelet/x/ansi v0.1.1 // indirect
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
@@ -50,7 +53,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
-	github.com/mattn/go-isatty v0.0.18 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-localereader v0.0.1 // indirect
 	github.com/mattn/go-runewidth v0.0.15
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
