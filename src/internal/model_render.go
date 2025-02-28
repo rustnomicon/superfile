@@ -2,6 +2,7 @@ package internal
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"image"
 	"log/slog"
@@ -402,7 +403,6 @@ func (m *model) terminalSizeWarnRender() string {
 	return fullScreenStyle(m.fullHeight, m.fullWidth).Render(`Terminal size too small:` + "\n" +
 		"Width = " + fullWidthString +
 		heightString + fullHeightString + "\n\n" +
-
 		"Needed for current config:" + "\n" +
 		"Width = " + terminalCorrectSize.Render(minimumWidthString) +
 		heightString + terminalCorrectSize.Render(minimumHeightString))
@@ -428,7 +428,6 @@ func (m *model) terminalSizeWarnAfterFirstRender() string {
 	return fullScreenStyle(m.fullHeight, m.fullWidth).Render(`You change your terminal size too small:` + "\n" +
 		"Width = " + fullWidthString +
 		heightString + fullHeightString + "\n\n" +
-
 		"Needed for current config:" + "\n" +
 		"Width = " + terminalCorrectSize.Render(minimumWidthString) +
 		heightString + terminalCorrectSize.Render(minimumHeightString))
@@ -660,19 +659,31 @@ func (m *model) filePreviewPanelRender() string {
 	}
 
 	if isImageFile(itemPath) {
+		var ansiRender string
 		if !m.fileModel.filePreview.open {
 			return box.Render("\n --- Preview panel is closed ---")
 		}
-		ansiRender, err := filepreview.ImagePreview(itemPath, m.fileModel.filePreview.width, previewLine, theme.FilePanelBG)
-		if err == image.ErrFormat {
-			return box.Render("\n --- " + icon.Error + " Unsupported image formats ---")
-		}
 
-		if err != nil {
-			slog.Error("Error covernt image to ansi", "error", err)
-			return box.Render("\n --- " + icon.Error + " Error covernt image to ansi ---")
+		// check terminal support kitty image protocol https://sw.kovidgoyal.net/kitty/kittens/icat/
+		if filepreview.CheckSupport() {
+			ansiRender, err = filepreview.ImagePreviewKitty(itemPath, m.fileModel.filePreview.width, previewLine)
+			if err != nil {
+				if errors.Is(err, image.ErrFormat) {
+					return box.Render("\n --- " + icon.Error + " Unsupported image format ---")
+				}
+				slog.Error("Kitty icat error", "error", err)
+				return box.Render("\n --- " + icon.Error + " Failed to display image ---")
+			}
+		} else {
+			ansiRender, err = filepreview.ImagePreview(itemPath, m.fileModel.filePreview.width, previewLine, theme.FilePanelBG)
+			if err == image.ErrFormat {
+				return box.Render("\n --- " + icon.Error + " Unsupported image formats ---")
+			}
+			if err != nil {
+				slog.Error("Error covernt image to ansi", "error", err)
+				return box.Render("\n --- " + icon.Error + " Error covernt image to ansi ---")
+			}
 		}
-
 		return box.AlignVertical(lipgloss.Center).AlignHorizontal(lipgloss.Center).Render(ansiRender)
 	}
 

@@ -1,6 +1,8 @@
 package filepreview
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
@@ -9,7 +11,9 @@ import (
 	_ "image/png"  // Import to enable PNG support
 	"log/slog"
 	"os"
+	"os/exec"
 	"strconv"
+	"strings"
 
 	"github.com/disintegration/imaging"
 	"github.com/muesli/termenv"
@@ -125,6 +129,44 @@ func adjustImageOrientation(file *os.File, img image.Image) image.Image {
 	}
 
 	return adjustOrientation(img, orientationValue)
+}
+
+func CheckSupport() int {
+	cmd := exec.Command("kitty", "icat", "--detect-support") //1 - not support; 0 - support;
+	err := cmd.Run()
+	if err != nil {
+		var exitError *exec.ExitError
+		_ = errors.As(err, &exitError)
+		return exitError.ExitCode()
+	}
+	return 0
+}
+
+func ImagePreviewKitty(itemPath string, width, height int) (string, error) {
+	cmd := exec.Command(
+		"kitty", "+kitten", "icat",
+		"--place", fmt.Sprintf("%dx%d@0x0", 100, 100),
+		"--align", "center",
+		itemPath,
+	)
+
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		errorMsg := stderr.String()
+		switch {
+		case strings.Contains(errorMsg, "Unsupported image format"):
+			return "", image.ErrFormat
+		case strings.Contains(errorMsg, "No such file or directory"):
+			return "", fmt.Errorf("file not found")
+		default:
+			return "", fmt.Errorf("icat error: %s", errorMsg)
+		}
+	}
+
+	return stdout.String(), nil
 }
 
 func adjustOrientation(img image.Image, orientation int) image.Image {
